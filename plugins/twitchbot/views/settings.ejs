@@ -3,22 +3,22 @@
   <form action="/plugin/twitchbot" method="post">
   <div class="form-group">
     <label for="api_key">API Key</label>
-    <input type="text" class="form-control" name="api_key" id="api_key" placeholder="Twitch API key">
+    <input type="text" class="form-control" name="api_key" id="api_key" value="<%= settings.api_key %>" placeholder="Twitch API key">
   </div>
 
   <div class="form-group">
     <label for="oath_key">OATH Key</label>
-    <input type="text" class="form-control" name="oath_key" id="oath_key" placeholder="Twitch OATH key">
+    <input type="text" class="form-control" name="oath_key" id="oath_key" value="<%= settings.oath_key %>" placeholder="Twitch OATH key">
   </div>
 
   <div class="form-group">
     <label for="bot_name">Bot Name</label>
-    <input type="text" class="form-control" name="bot_name" id="bot_name" placeholder="Bot Name">
+    <input type="text" class="form-control" name="bot_name" id="bot_name" value="<%= settings.bot_name %>" placeholder="Bot Name">
   </div>
 
    <div class="form-group">
     <label for="ch_name">Channel Name</label>
-    <input type="text" class="form-control" name="ch_name" id="ch_name" placeholder="Channel Name">
+    <input type="text" class="form-control" name="ch_name" id="ch_name" value="<%= settings.ch_name %>" placeholder="Channel Name">
   </div>
   <button type="submit" class="btn btn-success">Save</button>
 </form>

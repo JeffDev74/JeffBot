@@ -63,6 +63,7 @@ define([ 'fs', '../index.js', 'path' ], function( fs, plugin, path ) {
     // }
 
     var newSettings = {};
+    newSettings._id = 1;
     newSettings.api_key = req.body.api_key;
     newSettings.oath_key = req.body.oath_key;
     newSettings.bot_name = req.body.bot_name;
@@ -74,11 +75,10 @@ define([ 'fs', '../index.js', 'path' ], function( fs, plugin, path ) {
       settings.save(newSettings, function(err, result) {
         
         var meta = meta || {};
-        var items = items || {};
 
         req.app.get('ejs').renderFile(__dirname + '/plugins/' + that.plugin.id + '/views/settings.ejs', {
           meta : meta,
-          items : items
+          settings : newSettings
           }, function(err, html) {
             if (!err) {
               return res.render('override', {
@@ -157,26 +157,29 @@ define([ 'fs', '../index.js', 'path' ], function( fs, plugin, path ) {
 
   TwitchBotRoutes.prototype.PluginIndex = function(req, res, next) {
     var that = this;
-    var meta = meta || {};
-    var items = items || {};
-    req.app.get('ejs').renderFile(__dirname + '/plugins/' + that.plugin.id + '/views/settings.ejs', {
-        meta : meta,
-        items : items
-      }, function(err, html) {
-        if (!err) {
-          return res.render('override', {
-            content: html,
-            plugin: that.plugin.id,
-            title: 'Settings ' + that.plugin.name
-          });
-        } else {
-          console.log(err);
-          return res.status(500).render('500', {
-            title: '500 Internal Server Error'
-          });
-        }
-      }
-    );
+    that.plugin.app.get('db').collection(that.plugin.collection, function(err, collection) {
+      collection.findOne({_id : 1}, function(err, settings) {
+        var meta = meta || {};
+        req.app.get('ejs').renderFile(__dirname + '/plugins/' + that.plugin.id + '/views/settings.ejs', {
+          settings: settings,
+          meta: meta
+        }, function(err, html) {
+          console.log(settings);
+          if (!err) {
+            return res.render('override', {
+              content: html,
+              plugin: that.plugin.id,
+              title: that.plugin.name + ' Settings'
+            });
+          } else {
+            console.log(err);
+            return res.status(500).render('500', {
+              title: '500 Internal Server Error'
+            });
+          }
+        });
+      });
+    });
   };
 
   // GET request handlers end
