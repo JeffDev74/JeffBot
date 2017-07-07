@@ -40,7 +40,8 @@ plugins/botxp/
 plugins/chatcommand/
 plugins/overlaycounter/
 plugins/twitchapi/
-plugins/twitchbot/
+plugins/twitchbot/config/apikey.txt
+plugins/twitchbot/config/oath.txt
 
 config/development.json
 

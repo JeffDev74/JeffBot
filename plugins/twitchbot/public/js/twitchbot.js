@@ -1,0 +1,1 @@
+/*The file name must be the same as the plugin id eg: twitchbot.js*/
