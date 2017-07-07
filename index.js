@@ -84,7 +84,6 @@ requirejs([ 'http', 'https', 'connect', 'mongodb', 'path', 'express', 'node-conf
           //hack to pass authorization
           return callback(null, true);
 
-
           if (data.headers.cookie) {
             if(typeof data.headers.cookie !== 'string') {
               callback('Unauthorized', false);

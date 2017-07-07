@@ -68,15 +68,13 @@ define([ 'fs', 'requirejs' ], function( fs, requirejs ) {
   };
 
   PluginHelper.prototype.GetPlugin = function (plugin_id, callback) {
-    // Use array.some so the loop will end with the return.
-    // when using foreach the loop will not end with the return
-    // http://stackoverflow.com/questions/2641347/how-to-short-circuit-array-foreach-like-calling-break
-    this.app.locals.plugins.some(function(plugin) {
-    //this.app.get('plugins').some(function(plugin) {
-      if(plugin.id == plugin_id) {
-        return callback(plugin);
-      }
-    });
+    for (i = 0; i < this.app.locals.plugins.length; i++) {
+        if(this.app.locals.plugins[i].id == plugin_id) {
+          return callback(this.app.locals.plugins[i]);
+        } else {
+          return callback(null);
+        }
+    }
   };
 
   var exports = PluginHelper;
