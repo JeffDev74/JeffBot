@@ -69,12 +69,11 @@ define([ 'fs', 'requirejs' ], function( fs, requirejs ) {
 
   PluginHelper.prototype.GetPlugin = function (plugin_id, callback) {
     for (i = 0; i < this.app.locals.plugins.length; i++) {
-        if(this.app.locals.plugins[i].id == plugin_id) {
-          return callback(this.app.locals.plugins[i]);
-        } else {
-          return callback(null);
-        }
+      if(this.app.locals.plugins[i].id == plugin_id) {
+        return callback(this.app.locals.plugins[i]);
+      }
     }
+    return callback(null);
   };
 
   var exports = PluginHelper;
