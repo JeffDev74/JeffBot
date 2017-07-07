@@ -247,17 +247,12 @@ define([ 'crypto', 'cookie', 'fs', 'path' ], function(crypto, cookie, fs, path) 
 
     renderPluginItems(req.app, 'item', 0, html, function(err, html) {
       if (!err) {
-        req.app.get('db').collection('Room', function(err, collection) {
-           collection.find({}).toArray(function(err, rooms) {
-              app_rooms = rooms;
-              req.app.getFlashMessage(req, res, function(msg) {
-                return res.render('index', {
-                  title: 'Home',
-                  flash_message: msg,
-                  rooms: app_rooms,
-                  content: html.toString()
-                });
-              });
+        req.app.getFlashMessage(req, res, function(msg) {
+          return res.render('index', {
+            title: 'Home',
+            flash_message: msg,
+            rooms: app_rooms,
+            content: html.toString()
           });
         });
       } else {

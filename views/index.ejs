@@ -15,15 +15,7 @@
   <div class="container">
     <% include ../views/partials/messages %>
     <div class="row16"></div>
-    <div id="rooms-container">
-      <select id="rooms-filter" name="rooms-filter" data-callback="filterByRoom()">
-        <option value="any">Any</option>
-        <option value="1">Default</option>
-        <% rooms.forEach(function(room) { %>
-          <option value="<%=room._id%>" selected=""><%=room.name%></option>
-        <% }); %>
-      </select>
-    </div>
+    
     <div id="content">
       <%- content -%>
     </div>
