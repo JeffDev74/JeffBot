@@ -261,44 +261,29 @@ define([ 'crypto', 'cookie', 'fs', 'path' ], function(crypto, cookie, fs, path) 
    */
   Controller.checkPluginRoutes = function(req, res, next) { 
     if (req.params.plugin) {
-      var pluginList = [];
-      req.app.get('plugins').forEach(function(plugin) {
-        pluginList.push(plugin.id);
-      });
-
-      if (pluginList.indexOf(req.params.plugin) >= 0) {
-        req.app.get('plugins').forEach(function(plugin) {
-          if (plugin.id == req.params.plugin) {
-            if (plugin.routes) {
-              
-              var reqMethod = req.method.charAt(0).toUpperCase() + req.method.toLowerCase().slice(1);
-              var appLog = req.app.get('log');
-              
-              // serverip:port/plugin/example/edit
-              var action = reqMethod + 'Request';
-              if(typeof plugin.routes[action] === 'function') {
-
-                return plugin.routes[action](req, res, next);
-              } else {
-                var msg = '[APP ROUTES]: The plugin [' + plugin.id + '] does not implement route for [' + action + ']';
-                req.app.get('routes').setFlashMessage('warning', msg, req, function(msg) {
-                  return res.redirect('/');
-                });
-              }
+      req.app.get('plugin helper').GetPlugin(req.params.plugin, function(plugin) {
+        if(plugin) {
+          if (plugin.routes) {
+            var reqMethod = req.method.charAt(0).toUpperCase() + req.method.toLowerCase().slice(1);
+            var appLog = req.app.get('log');
+            var action = reqMethod + 'Request';
+            if(typeof plugin.routes[action] === 'function') {
+              console.log('CALLING PLUGIN ['+req.params.plugin+'] FOR ACTION ['+action+']');
+              return plugin.routes[action](req, res, next);
             } else {
-              var msg = '[APP ROUTES]: Plugin [' + req.params.plugin + '] does implement any routes.';
+              var msg = '[APP ROUTES]: The plugin [' + plugin.id + '] does not implement route for [' + action + ']';
               req.app.get('routes').setFlashMessage('warning', msg, req, function(msg) {
                 return res.redirect('/');
               });
             }
           }
-        });
-      } else {
-        var msg = '[APP ROUTES]: Plugin [' + req.params.plugin + '] does not exist.';
-        req.app.get('routes').setFlashMessage('warning', msg, req, function(msg) {
-          return res.redirect('/');
-        });
-      }
+        } else {
+          var msg = '[APP ROUTES]: Plugin [' + req.params.plugin + '] does not exist.';
+          req.app.get('routes').setFlashMessage('warning', msg, req, function(msg) {
+            return res.redirect('/');
+          });
+        }
+      });
     } else {
       var msg = '[APP ROUTES]: Plugin not specified on the route.';
       req.app.get('routes').setFlashMessage('warning', msg, req, function(msg) {
