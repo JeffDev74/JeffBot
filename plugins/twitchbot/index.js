@@ -17,15 +17,11 @@ define([ 'fs', './routes/routes.js', 'path', 'tmi.js' ], function( fs, routes, p
 
     this.app = app;
 
-    // that.pluginHelper = app.get('plugin helper');
-    // that.mqtt_server = app.get('mqtt');
     this.log = app.get('log');
 
     this.config = app.get('config');
 
     this.events = app.get('events');
-    
-    // that.routes = new TwitchBotRoutes(that);
     
     this.bot = null;
     this.botOptions = {};
