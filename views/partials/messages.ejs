@@ -1,0 +1,12 @@
+  <% /*
+    http://stackoverflow.com/questions/12241449/displaying-the-flash-after-a-redirect-in-express-3-x
+    http://stackoverflow.com/questions/16452123/how-to-create-global-variables-accessible-in-all-views-using-express-node-js
+    if(messages && messages != 'undefined') { message = messages.pop(); console.log(message);}
+  */  %>
+<% if (typeof(flash_message) !== 'undefined' && flash_message.text !== '') { %>
+  <div class="alert <%= 'alert-' + flash_message.type %> fade in">
+    <button type="button" data-dismiss="alert" class="close">×</button>
+    <strong>Success:&nbsp;</strong><%= flash_message.text %>
+  </div>
+  <% flash_message.text = ''; flash_message.type == 'info'; %>
+<% } %>

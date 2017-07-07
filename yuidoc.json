@@ -1,0 +1,9 @@
+{
+  "name": "index.js",
+  "description": "index.js: Twitch bot with Node.js",
+  "version": "0.0.1",
+  "url": "http://github.com/jeffdev/index.js",
+  "options": {
+    "outdir": "./docs"
+  }
+}

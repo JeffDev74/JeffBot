@@ -1,0 +1,33 @@
+<!DOCTYPE html> 
+<html lang="en">
+<style type="text/css">
+  body { 
+    min-width: 1920px;
+    min-height: 1080px; 
+    text-align: center; 
+    background-image: url("/img/overlay.png");
+  }
+</style>
+  <head>
+    <% include ../views/partials/head %>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <header></header>
+    <%- content -%>
+    <div id="overlay">
+      <div id='follow' class='section'>
+        <div class='tag'>Test</div>
+        <div class='followerName get_count'>name</div>
+        <div class='tag-highlight'></div>
+      </div>
+      <!-- <div id="follow section">follow</div>
+      <div id="sub">sub</div>
+      <div id="tip">56</div>
+      <div id="game">dev</div> -->
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.2/TweenMax.min.js"></script>
+    <footer></footer>
+  </body>
+</html>

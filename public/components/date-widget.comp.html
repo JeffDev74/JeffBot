@@ -1,0 +1,152 @@
+<template>
+  <style>
+  @import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700);
+  .date-container {
+    background-color: #FFF;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #dadada;
+    position: relative;
+    min-height: 100px;
+    font-family: 'Roboto Condensed', sans-serif;
+    margin: 10px 0;
+  }
+  .date-container .left {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 30%;
+    color: #FFF;
+    border-radius: 5px 0 0 5px;
+    text-align: center;
+    padding: 18px 0 0 0;
+  }
+  .date-container .left .month {
+    line-height: 20px;
+    font-weight: 300;
+  }
+  .date-container .left .day {
+    font-size: 40px;
+  }
+  .date-container .right {
+    margin-left: 30%;
+    padding: 10px 10px 10px 15px;
+    color: #333;
+  }
+  .date-container .right .day-long {
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 35px;
+  }
+  .date-container .right .time {
+    font-weight: bold;
+    font-size: 35px;
+    line-height: 40px;
+  }
+  /* Theme colde */
+  .date-container.green .left {
+    background-color: #37bc9b;
+  }
+  .date-container.green .day-long {
+    color: #278b70;
+  }
+  .date-container.red .left {
+    background-color: #bc2751;
+  }
+  .date-container.red .day-long {
+    color: #922146;
+  }
+  .date-container.blue .left {
+    background-color: #356dbc;
+  }
+  .date-container.blue .day-long {
+    color: #2d5ea3;
+  }
+  .date-container.gold .left {
+    background-color: #bc9600;
+  }
+  .date-container.gold .day-long {
+    color: #9a7b00;
+  }
+  </style>
+  <!-- https://www.youtube.com/watch?v=nvSE-MmiKPY -->
+  <div class="date-container green">
+    <div class="left">
+      <div class="month"></div>
+      <div class="day"></div>
+    </div>
+    <div class="right">
+      <div class="day-long"></div>
+      <div class="time"></div>
+    </div>
+  </div>
+</template>
+<script type="text/javascript">
+  (function() {
+    // Get the contents of te template (_currentScript is available with webcomponents.js, use currentScript if you donn't use Polyfill)
+    var template = document._currentScript.ownerDocument.querySelector('template');
+    // Create a prototype for this component
+    var proto = Object.create(HTMLElement.prototype);
+
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+    // Register a createdCallback
+    proto.createdCallback = function () {
+      // Grab the contents of the template
+      var clone = document.importNode(template.content, true);
+      // Add the template contents to the shadow DOM
+      this.createShadowRoot().appendChild(clone);
+
+      // Grab the elements from the shadow root
+      this.$container = this.shadowRoot.querySelector('.date-container');
+      this.$month = this.shadowRoot.querySelector('.month');
+      this.$day = this.shadowRoot.querySelector('.day');
+      this.$daylong = this.shadowRoot.querySelector('.day-long');
+      this.$time = this.shadowRoot.querySelector('.time');
+
+      this.updateTheme(this.getAttribute('theme'));
+
+      // Call the draw function initially
+      this.draw();
+      var that = this;
+      // Call the draw function every second to update the time
+      setInterval(function() {
+        that.draw();
+      }, 1000);
+    };
+
+    proto.draw = function () {
+      this.date = new Date();
+      this.$month.innerHTML = months[this.date.getMonth()];
+      this.$day.innerHTML = this.date.getDate();
+      this.$daylong.innerHTML = days[this.date.getDay()].toUpperCase();
+      this.$time.innerHTML = this.date.toLocaleTimeString();
+    };
+
+    proto.updateTheme = function(theme) {
+      var val = "green";
+      if(['green', 'red', 'blue', 'gold'].indexOf(theme) > -1) {
+        val = theme;
+      }
+      this.$container.className = 'date-container ' + val;
+    }
+
+    // Called when the component istance is attached to the DOM
+    proto.attachedCallback = function () {
+
+    };
+
+    // Called when one of this components attributes change
+    proto.attributeChangeCallback = function (attrName, oldVal, newVal) {
+      switch(attrName) {
+        case 'theme':
+        this.updateTheme(newVal);
+        break;
+      }
+    };
+
+    // Register the element with the document
+    document.registerElement('date-widget', {prototype: proto});
+  }());
+</script>

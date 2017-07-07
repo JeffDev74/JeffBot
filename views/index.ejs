@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../views/partials/head %>
+</head>
+<body>
+
+  <script type="text/javascript">
+    var BASE_URL = 'http://192.168.1.3:8081';
+  </script>
+  <header>
+    <% include ../views/partials/header %>
+  </header>
+
+  <div class="container">
+    <% include ../views/partials/messages %>
+    <div class="row16"></div>
+    <div id="rooms-container">
+      <select id="rooms-filter" name="rooms-filter" data-callback="filterByRoom()">
+        <option value="any">Any</option>
+        <option value="1">Default</option>
+        <% rooms.forEach(function(room) { %>
+          <option value="<%=room._id%>" selected=""><%=room.name%></option>
+        <% }); %>
+      </select>
+    </div>
+    <div id="content">
+      <%- content -%>
+    </div>
+  </div>
+
+  <footer>
+    <% include ../views/partials/footer %>
+  </footer>  
+</body>
+</html>

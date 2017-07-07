@@ -1,0 +1,106 @@
+<!-- views/pages/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../views/partials/head %>
+</head>
+<body>
+
+    <!-- <header> -->
+        <% include ../views/partials/header %>
+    <!-- </header> -->
+    <div class="container">
+    <h1>Bot System Settings</h1>
+    <% include ../views/partials/messages %>
+    <div class="row16"></div>
+    <div class="row">
+      <div class="span5">
+        <h2>Select theme</h2>
+        <p>Bootstrap compatible themes from <a href="http://bootswatch.com/">Bootswatch</a>.</p>
+        <form action="/settings/theme" method="POST">
+          <p>
+            <label for="changetheme">Theme:</label>
+            <select name="theme">
+              <% console.log(theme) %>
+              <option value="default" <%= theme==='/css/bootstrap.min.css' ? 'selected' : '' %>>bootstrap.css</option>
+              <% themes.forEach(function(t) { %>
+                <option value="<%= t %>" <%= theme==='/css/themes/' + t ? 'selected' : '' %>><%= t %></option>
+              <% }); %>
+            </select>
+          </p>
+          <p>
+            <input value="Select Theme" class="btn btn-success btn-login" type="submit">
+          </p>
+        </form>
+      </div>
+      <div class="span5">     
+        <h2>Change password</h2>
+        <form action="/settings/password" method="POST">
+          <p>
+            <label for="oldpassword">Old Password:</label>
+            <input id="oldpassword" name="oldpassword" required="1" class="login" type="password">
+          </p>
+          <p>
+            <label for="newpassword">New Password:</label>
+            <input id="newpassword" name="newpassword" required="1" class="login" type="password">
+          </p>
+          <p>
+            <label for="repeatnewpassword">Repeat new Password:</label>
+            <input id="repeatnewpassword" name="repeatnewpassword" required="1" class="login" type="password">
+          </p>
+          <p>
+            <input value="Change" class="btn btn-success btn-login" type="submit">
+          </p>
+        </form>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span10">
+        <h2>User Management</h2>
+      </div>
+      <div class="span5">
+        <h3>Users</h3>
+        <table class="table table-striped">
+          <tbody>
+            <tr>
+              <th>Email</th>
+              <th>Action</th>
+            </tr>
+            <% users.forEach(function(u) { %>
+              <tr>
+              <td><%=u.email%></td>
+              <td>
+                <a href="/settings/user/delete/<%=u.email%>" class="btn btn-danger">Delete</a>
+              </td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+      <div class="span5">
+        <h3>Add a user
+          <form id="adduser" action="/settings/user/create" method="POST">
+            <p>
+              <label for="email">Email:</label>
+              <input name="email" required="1" class="adduser" type="email">
+            </p>
+            <p>
+              <label for="password">Password:</label>
+              <input name="password" required="1" class="adduser" type="password">
+            </p>
+            <p>
+              <input value="Create" class="btn btn-success btn-login" type="submit">
+            </p>
+          </form>
+        </h3>
+      </div>
+    </div>
+</div>
+
+    <footer>
+        <% include ../views/partials/footer %>
+    </footer>
+    
+</body>
+</html>

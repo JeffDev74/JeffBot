@@ -1,0 +1,49 @@
+<!-- views/pages/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../views/partials/head %>
+</head>
+<body>
+
+    <script type="text/javascript">
+      var BASE_URL = 'http://192.168.1.3:8081';
+    </script>
+    <header>
+        <% include ../views/partials/header %>
+    </header>
+
+    <div class="container">
+    <div class="row16"></div>
+    
+    <div id="content">
+      <h1>Login</h1>
+      <% include ../views/partials/messages %>
+      <div class="row16">
+        <form id="loginform" action="/login" method="POST">
+          <p>
+            <label for="email">Email:</label>
+            <input id="email" name="email" placeholder="john.doe@example.com" required="1" class="login" type="email">
+          </p>
+          <p>
+            <label for="password">Password:</label>
+            <input id="password" name="password" placeholder="**********" required="1" class="login" type="password">
+          </p>
+          <p>
+            <label class="checkbox">
+            <input id="rememberme" type="checkbox">Remember me</label>
+          </p>
+          <br>
+          <p>
+            <input value="Login" class="btn btn-success btn-login" type="submit">
+          </p>
+        </form>
+      </div>
+    </div>
+</div>
+    <footer>
+        <% include ../views/partials/footer %>
+    </footer>
+</body>
+</html>

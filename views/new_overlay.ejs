@@ -1,0 +1,47 @@
+<!DOCTYPE html> 
+<html lang="en">
+<style type="text/css">
+  body { 
+    min-width: 800px;
+    min-height: 600px; 
+    text-align: center; 
+    /*background-image: url("/img/overlay.png");*/
+  }
+  #top {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  right: 50%;
+  width: 800px;
+  height: 23px;
+  background-color: #FFA500;
+}
+
+div#top:before {
+    content: '';
+    position: absolute;
+    top: 0; right: 100%;
+    border-top: 23px solid orange;
+    border-left: 23px solid transparent;
+    width: 0;
+}
+
+div#top:after {
+    content: '';
+    position: absolute;
+    top: 0; left: 100%;
+    border-top: 23px solid orange;
+    border-right: 23px solid transparent;
+    width: 0;
+}
+</style>
+  <head>
+    <% include ../views/partials/head %>
+  </head>
+  <body>
+    <header></header>
+    <div id="top" class="">TOP</div>
+    <%- content -%>
+    <footer></footer>
+  </body>
+</html>

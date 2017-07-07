@@ -1,0 +1,31 @@
+{
+  "name": "JeffDevTwitchBot",
+  "version": "0.0.1",
+  "private": false,
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "amdefine": "= 1.0.0",
+    "body-parser": "^1.15.2",
+    "connect": "= 2.12.0",
+    "cookie": "= 0.3.1",
+    "cookie-parser": "^1.4.3",
+    "delivery": "= 0.0.3",
+    "ejs": "^2.5.2",
+    "express": "= 4.14.0",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.14.2",
+    "handlebars": "^4.0.5",
+    "method-override": "^2.3.7",
+    "mongodb": "2.2.11",
+    "morgan": "^1.7.0",
+    "mosca": "2.2.0",
+    "node-conf": "= 0.0.6",
+    "ping": "= 0.1.7",
+    "requirejs": "= 2.3.2",
+    "serve-favicon": "^2.3.2",
+    "socket.io": "= 1.7.1",
+    "tmi.js": "^1.2.0"
+  }
+}
