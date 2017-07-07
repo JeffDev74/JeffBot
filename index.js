@@ -204,10 +204,6 @@ requirejs([ 'http', 'https', 'connect', 'mongodb', 'path', 'express', 'node-conf
       app.get('/register', Routes.preRoute, Routes.showRegister);
       app.post('/register', Routes.preRoute, Routes.doRegister);
 
-      app.get('/rooms', Routes.preRoute, Routes.isAuthorized, Routes.rooms);
-      app.post('/rooms', Routes.preRoute, Routes.isAuthorized, Routes.roomsCreate);
-      app.get('/rooms/:name', Routes.preRoute, Routes.isAuthorized, Routes.roomsDelete);
-
       app.get('/login', Routes.preRoute, Routes.showLogin);
       app.post('/login', Routes.preRoute, Routes.doLogin);
       app.post('/api/login', Routes.preRoute, Routes.createAuthToken);
