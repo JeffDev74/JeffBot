@@ -1,14 +1,10 @@
 <div class="container">
   <h2>TwitchBot Settings</h2>
   <form action="/plugin/twitchbot" method="post">
-  <div class="form-group">
-    <label for="api_key">API Key</label>
-    <input type="text" class="form-control" name="api_key" id="api_key" value="<%= settings.api_key %>" placeholder="Twitch API key">
-  </div>
-
+  
   <div class="form-group">
     <label for="oath_key">OATH Key</label>
-    <input type="text" class="form-control" name="oath_key" id="oath_key" value="<%= settings.oath_key %>" placeholder="Twitch OATH key">
+    <input type="password" class="form-control" name="oath_key" id="oath_key" value="<%= settings.oath_key %>" placeholder="Twitch OATH key">
   </div>
 
   <div class="form-group">

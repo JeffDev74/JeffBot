@@ -64,7 +64,6 @@ define([ 'fs', '../index.js', 'path' ], function( fs, plugin, path ) {
 
     var newSettings = {};
     newSettings._id = 1;
-    newSettings.api_key = req.body.api_key;
     newSettings.oath_key = req.body.oath_key;
     newSettings.bot_name = req.body.bot_name;
     newSettings.ch_name = req.body.ch_name;
