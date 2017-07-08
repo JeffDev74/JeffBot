@@ -55,13 +55,6 @@ define([ 'fs', '../index.js', 'path' ], function( fs, plugin, path ) {
   TwitchBotRoutes.prototype.SaveSettings = function(req, res, next) {
     var that = this;
 
-    // { 
-    //   api_key: 'api_key_value',
-    //   oath_key: 'aoth_key_value',
-    //   bot_name: 'bot_name_value',
-    //   ch_name: 'channel_name_value' 
-    // }
-
     var newSettings = {};
     newSettings._id = 1;
     newSettings.oath_key = req.body.oath_key;
@@ -147,6 +140,8 @@ define([ 'fs', '../index.js', 'path' ], function( fs, plugin, path ) {
 
     if(action == null) {
       that.PluginIndex(req, res, next);
+    } else if (action == 'settings') {
+      that.GetPluginSettings(req, res, next);
     } else {
       return res.status(404).render('404', {
         title: '404 Page not found'
@@ -155,6 +150,33 @@ define([ 'fs', '../index.js', 'path' ], function( fs, plugin, path ) {
   };
 
   TwitchBotRoutes.prototype.PluginIndex = function(req, res, next) {
+    var that = this;
+    that.plugin.app.get('db').collection(that.plugin.collection, function(err, collection) {
+      collection.findOne({_id : 1}, function(err, settings) {
+        var meta = meta || {};
+        req.app.get('ejs').renderFile(__dirname + '/plugins/' + that.plugin.id + '/views/index.ejs', {
+          settings: settings,
+          meta: meta
+        }, function(err, html) {
+          console.log(settings);
+          if (!err) {
+            return res.render('override', {
+              content: html,
+              plugin: that.plugin.id,
+              title: that.plugin.name + ' Settings'
+            });
+          } else {
+            console.log(err);
+            return res.status(500).render('500', {
+              title: '500 Internal Server Error'
+            });
+          }
+        });
+      });
+    });
+  };
+
+  TwitchBotRoutes.prototype.GetPluginSettings = function(req, res, next) {
     var that = this;
     that.plugin.app.get('db').collection(that.plugin.collection, function(err, collection) {
       collection.findOne({_id : 1}, function(err, settings) {
@@ -179,7 +201,7 @@ define([ 'fs', '../index.js', 'path' ], function( fs, plugin, path ) {
         });
       });
     });
-  };
+  }
 
   // GET request handlers end
 
