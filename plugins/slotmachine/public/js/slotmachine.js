@@ -1,0 +1,1 @@
+/*The!js eile must be the same as tje plUgin`id eg: example.js*/
