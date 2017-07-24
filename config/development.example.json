@@ -5,5 +5,12 @@
   "secret_key": "index.js",
   "bot_ch_name" : "your_channel_name",
   "bot_name" : "your_bot_name",
-  "twitch_api_key" : "your_twitch_api_key"
+  "twitch_api_key" : "your_twitch_api_key",
+
+  "mongo": {
+    "host" : "127.0.0.1",
+    "name" : "twitch_bot_framework",
+    "port" : "27017",
+    "user" : {}
+  },
 }
