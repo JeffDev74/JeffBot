@@ -1,0 +1,99 @@
+html .overlay, body .overlay {
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+}
+
+body .overlay {
+  font-family: 'Michroma', sans-serif;
+  background: rgba(0,0,0,0);
+}
+header {
+  width: 0;
+  height: 0;
+}
+
+@font-face {
+  font-family: 'Michroma';
+}
+
+#reminderContainer {
+  width: 0; /*650px;*/
+  height: 0; /*124px;*/
+  background: #000;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  overflow: hidden;
+  color: white;
+  font-family: 'Michroma';
+  -webkit-box-shadow: 0px 0px 20px #6441a4 ;
+}
+
+.animateContainer {
+  -webkit-animation: animateReminder 20s 0s 1;
+}
+
+#reminderHeader {
+  width: 650px;
+  height: 30px;
+  background: #6441a4 ;/* #fa6524;*/
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  font-size: 20px;
+}
+
+#reminderContent {
+  width: 650px;
+  height: 94px;
+  font-size: 16px;
+  background: #000;
+  position: relative;
+  overflow: hidden;
+  color: white;
+}
+
+#reminderContent img {
+    margin-top: 4px;
+    margin-left: 2px;
+  }
+
+#reminderInfo {
+  margin-left: 110px;
+  margin-top: 13px
+}
+
+#userLogo {
+  width: 90px;
+  height: 90px;
+  float: left;
+}
+        
+@-webkit-keyframes animateReminder {
+  0%, 100% {
+    width: 0px;
+    height: 27px;
+  }
+  20%, 80% {
+    width: 650px;
+    height: 27px;
+  }
+  30%, 70% {
+    width: 650px;
+    height: 127px;
+  }
+
+  /*0%, 100% {
+    width: 650px;
+    height: 127px;
+  }
+  20%, 80% {
+    width: 650px;
+    height: 127px;
+  }
+  30%, 70% {
+    width: 650px;
+    height: 127px;
+  }*/
+}
