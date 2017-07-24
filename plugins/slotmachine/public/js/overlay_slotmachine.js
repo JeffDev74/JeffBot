@@ -1,5 +1,14 @@
 require([ '/socket.io/socket.io.js', 'jquery' ], function(io) {
   $(document).ready(function() {
+
+    var slotStopAudioElement = document.createElement('audio');
+    slotStopAudioElement.setAttribute('src', '/sounds/slot_stop.mp3');
+
+    var slotMachineStartAudioElement = document.createElement('audio');
+    slotMachineStartAudioElement.setAttribute('src', '/sounds/machine_start.mp3');
+
+    var userWinAudioElement = document.createElement('audio');
+    userWinAudioElement.setAttribute('src', '/sounds/user_win.mp3');
     
     var socket = io.connect('http://192.168.1.3:8081');
 
@@ -13,20 +22,25 @@ require([ '/socket.io/socket.io.js', 'jquery' ], function(io) {
     
 
     var info = {};
+
+    socket.on('update_jackpot', function(data) {
+      $('#jack_pot').html('JACKPOT ' + data.jackpot + 'XP');
+    });
     
     socket.on('start', function(data) {
       
       socket.emit('update_status', { state : true});
 
       info = data;
-
       
       slota.reset();
       slotb.reset();
       slotc.reset();
 
-      $('#jack_pot').html(info.jackpot + 'XP JACKPOT');
+      $('#jack_pot').html('JACKPOT ' + info.jackpot + 'XP');
       $('#result').html(info.user.display_name + ' is spinning...');
+
+      slotMachineStartAudioElement.play();
 
       slota.start();
       slotb.start();
@@ -36,9 +50,7 @@ require([ '/socket.io/socket.io.js', 'jquery' ], function(io) {
       //if so, enable the control
       zz = window.setInterval(function() {
           if(slota.speed >= slota.maxSpeed && slotb.speed >= slotb.maxSpeed && slotc.speed >= slotc.maxSpeed) {
-              slota.stop();
-              slotb.stop();
-              slotc.stop();
+              
               socket.emit('slotmachine_stopped');
             window.clearInterval(zz);
           }
@@ -46,6 +58,10 @@ require([ '/socket.io/socket.io.js', 'jquery' ], function(io) {
     });
 
     socket.on('stop', function(data){
+
+      slota.stop();
+      slotb.stop();
+      slotc.stop();
       //check every 100ms if slots have stopped
       //if so, enable the control
       xx = window.setInterval(function() {
@@ -54,6 +70,7 @@ require([ '/socket.io/socket.io.js', 'jquery' ], function(io) {
               var result = '';
               if(win[slota.pos] === win[slotb.pos] && win[slota.pos] === win[slotc.pos]) {
                 result = info.user.display_name + ' WON!';
+                userWinAudioElement.play();
                 info.result = true;
               } else {
                 result = info.user.display_name + ' LOST!';
@@ -160,6 +177,7 @@ require([ '/socket.io/socket.io.js', 'jquery' ], function(io) {
                 $(_this.el).spStop();
                 clearInterval(_this.si);
                 $(_this.el).removeClass('motion');
+                slotStopAudioElement.play();
                 _this.speed = 0;
             }
         }, 100);

@@ -41,6 +41,16 @@ define([ 'fs', './routes/routes.js' ], function( fs, routes ) {
 
   }
 
+  Slotmachine.prototype.sleep = function(milliseconds, callback) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+      if ((new Date().getTime() - start) > milliseconds){
+        break;
+      }
+    }
+    callback();
+  }
+
   Slotmachine.prototype.init = function(settings) {
     var that = this;
 
@@ -55,6 +65,7 @@ define([ 'fs', './routes/routes.js' ], function( fs, routes ) {
           
           socket.on('update_status', function(data) {
             that.slotIsRunning = data.state;
+            socket.emit('update_jackpot', {jackpot : that.jackpot});
           });
 
           socket.on('game_over', function(data) {
@@ -81,30 +92,38 @@ define([ 'fs', './routes/routes.js' ], function( fs, routes ) {
               // }
             }
 
+            var chatMessage = 'JACKPOT!!! The viewer ' + data.user.display_name + ' won ' + that.jackpot + 'XP';
+
             that.slotIsRunning = false;
             if(data.result) {
               // give xp to the user
               data.user.xp += that.jackpot;
+              
               that.events.emit('saveUser', data.user, function(result) {
-                console.log('The user ['+data.user.display_name+'] won ['+that.jackpot+'] xp now is ['+data.user.xp+']');
+                console.log(chatMessage + ' xp now is ['+data.user.xp+']');
+                that.events.emit('send_twitch_chat', { channel : 'jeffdev', message : chatMessage});
                 // reset jack pot
                 that.jackpot = that.jackpotInitialValue;
               });
             
             } else {
-              console.log("The user lost");
+              //console.log("The user lost");
             }
+
+            
 
             var jackpot = {};
             jackpot.value = that.jackpot;
             that.saveJackPot(jackpot, function() {
-              console.log('Jackpot was saved to ['+jackpot.value+']');
+              //console.log('Jackpot was saved to ['+jackpot.value+']');
             });
 
           });
 
           socket.on('slotmachine_stopped', function(data) {
-            socket.emit('stop', {});
+            that.sleep(Math.floor((Math.random() * 5000) + 1000), function(){
+              socket.emit('stop', {});
+            });
           });
 
         });
@@ -135,6 +154,12 @@ define([ 'fs', './routes/routes.js' ], function( fs, routes ) {
             // }
           }
 
+          if(twitch.message == '!jackpot') {
+            var chatMessage = 'The JACKPOT is ' + that.jackpot + 'XP';
+            that.events.emit('send_twitch_chat', { channel : 'jeffdev', message : chatMessage});
+            return;
+          }
+
           if(twitch.message.startsWith(that.command)) {
 
             if(that.slotIsRunning) {
@@ -142,9 +167,9 @@ define([ 'fs', './routes/routes.js' ], function( fs, routes ) {
               return;
             }
 
-            var amount = twitch.message.replace(that.command,'');
-            var validAmount = parseInt(amount, 10);
-            if(validAmount === validAmount) {
+            //var amount = twitch.message.replace(that.command,'');
+            //var validAmount = parseInt(amount, 10);
+            //if(validAmount === validAmount) {
               var userId = twitch.user['user-id'];
 
               that.events.emit('getUser', userId, function(user) {
@@ -171,10 +196,14 @@ define([ 'fs', './routes/routes.js' ], function( fs, routes ) {
                   return;
                 }
 
-                if(validAmount <= user.xp) {
-                  if(validAmount === that.amountToSpin) {
+                if(user.name == 'bottweiler' || user.name == 'bottweilerjr') {
+                  return;
+                }
+
+                if(that.amountToSpin <= user.xp) {
+                  //if(validAmount === that.amountToSpin) {
                     
-                    that.jackpot += validAmount;
+                    that.jackpot += that.amountToSpin;
 
                     // remove xp from the user
 
@@ -189,24 +218,24 @@ define([ 'fs', './routes/routes.js' ], function( fs, routes ) {
                     // });
                     user.xp -= that.amountToSpin;
                     that.events.emit('saveUser', user, function(result) {
-                      console.log('The user ['+user.display_name+'] was saved xp is ['+user.xp+']');
+                      //console.log('The user ['+user.display_name+'] was saved xp is ['+user.xp+']');
                     });
                     
                     var data = {};
                     data.user = user;
-                    data.amount = validAmount;
+                    data.amount = that.amountToSpin;
                     data.jackpot = that.jackpot;
                     that.sockets.emit('start', data);
 
-                    console.log('User ['+user.display_name+'] spinning for ['+validAmount+']');
-                  }
+                    //console.log('User ['+user.display_name+'] spinning for ['+that.amountToSpin+']');
+                  //}
                 } else {
-                  console.log('The user ['+user.display_name+'] does not have ['+validAmount+'] he/she have ['+user.xp+']');
+                  console.log('The user ['+user.display_name+'] does not have ['+that.amountToSpin+'] he/she have ['+user.xp+']');
                 }
 
 
               }); // end find user
-            } // end check valid amount
+            //} // end check valid amount
           } // end twitch message have command
         }); // end on twitch chat
 
