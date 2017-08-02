@@ -45,15 +45,6 @@ requirejs([ 'http', 'https', 'connect', 'mongodb', 'path', 'express', 'node-conf
     native_parser: false
   }), {w:1});
 
-  // Load mqtt server
-  var ascoltatore = {
-      //using ascoltatore
-      type: 'mongo',
-      url: 'mongodb://'+config.mqtt.dbhost+':'+config.mqtt.dbport+'/'+config.mqtt.dbport,
-      pubsubCollection: config.mqtt.dbcollection,
-      mongo: {}
-  };
-
   var cookieParser = cookiep(config.secret);// Express.cookieParser(config.secret);
   var sessionStore = new Connect.middleware.session.MemoryStore();
 
