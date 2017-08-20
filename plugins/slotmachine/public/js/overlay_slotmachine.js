@@ -2,12 +2,15 @@ require([ '/socket.io/socket.io.js', 'jquery' ], function(io) {
   $(document).ready(function() {
 
     var slotStopAudioElement = document.createElement('audio');
+    slotStopAudioElement.volume = 0.02;
     slotStopAudioElement.setAttribute('src', '/sounds/slot_stop.mp3');
 
     var slotMachineStartAudioElement = document.createElement('audio');
+    slotMachineStartAudioElement.volume = 0.05;
     slotMachineStartAudioElement.setAttribute('src', '/sounds/machine_start.mp3');
 
     var userWinAudioElement = document.createElement('audio');
+    // userWinAudioElement.volume = 1.0;
     userWinAudioElement.setAttribute('src', '/sounds/user_win.mp3');
     
     var socket = io.connect('http://192.168.1.3:8081');
